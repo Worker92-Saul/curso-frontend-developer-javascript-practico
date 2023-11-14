@@ -5,12 +5,13 @@ const botonMovil = document.querySelector(".menu");
 const menuMovilLeft = document.querySelector(".mobile-menu");
 // document.getElementsByClassName regresa un alista de elementos, tendriamos que usar [0]
 
-const menuCarrito = document.querySelector(".product-detail");
+const menuCarrito = document.querySelector("#shoppingCartContainer");
 const botonCarrito = document.querySelector(".navbar-shopping-cart");
 
 const cards = document.querySelector(".cards-container");
 
-
+const productDetail = document.querySelector("#productDetail");
+const botonCloseProductDetail = document.querySelector(".product-detail-close");
 /* Ejemplos*/
 const productList = []; // En esta ocacion manualmente, aquí debemos obtener los datos de nuestra base de datos.
 productList.push({
@@ -36,34 +37,47 @@ renderProducts(productList); // Cargamos los productos
 menuEmail.addEventListener('click',ocultarMinuCuadro);
 botonMovil.addEventListener('click',ocultarMenuMovilLeft);
 botonCarrito.addEventListener('click',ocultarCarrito);
+botonCloseProductDetail.addEventListener('click',closeProductDetail);
 
 function ocultarMinuCuadro(){
     let isMenuCarritoActive = !menuCarrito.classList.contains('inactive');
+    let isProductDetailActive = !productDetail.classList.contains('inactive');
 
     if(isMenuCarritoActive){
         ocultarCarrito();
+    } else if(isProductDetailActive){
+        closeProductDetail();
     }
     miniCuadro.classList.toggle("inactive");
 }
 
 function ocultarMenuMovilLeft(){
     let isMenuCarritoActive = !menuCarrito.classList.contains('inactive');
+    let isProductDetailActive = !productDetail.classList.contains('inactive');
 
     if(isMenuCarritoActive){
         ocultarCarrito();
     }
+    if(isProductDetailActive){
+        closeProductDetail();
+    }
     menuMovilLeft.classList.toggle("inactive");
 }
-
+// gato
 function ocultarCarrito(){
     let isMenuMovilActive = !menuMovilLeft.classList.contains('inactive');
     let isMiniCuadro = !miniCuadro.classList.contains('inactive');
-    
+    let isProductDetailActive = !productDetail.classList.contains("inactive");
+
     if(isMenuMovilActive){
         ocultarMenuMovilLeft();
     }
     if(isMiniCuadro){
         ocultarMinuCuadro();
+    }
+    
+    if(isProductDetailActive){
+        closeProductDetail();
     }
     menuCarrito.classList.toggle("inactive");
 }
@@ -91,6 +105,8 @@ function renderProducts(arr){ // crea los elemento de una fomras más ordenada.
         
         icono.setAttribute('src',"./icons/bt_add_to_cart.svg");
         
+        image.addEventListener('click',openProductDetail)
+
         /* Se van agregando los elementos dentro de otros*/
         figure.appendChild(icono);
         productInfoDiv.append(marc,price);
@@ -98,4 +114,20 @@ function renderProducts(arr){ // crea los elemento de una fomras más ordenada.
         productCard.append(image,productInfo);
         cards.appendChild(productCard);
     }    
+}
+
+function openProductDetail(){
+    let isMenuCarritoActive = !menuCarrito.classList.contains('inactive');
+    let isMiniCuadro = !miniCuadro.classList.contains('inactive');
+    
+    if(isMenuCarritoActive){
+        ocultarCarrito();
+    } else if(isMiniCuadro){
+        ocultarMinuCuadro();
+    }
+    productDetail.classList.remove("inactive");
+}
+
+function closeProductDetail(){
+    productDetail.classList.add("inactive");
 }
